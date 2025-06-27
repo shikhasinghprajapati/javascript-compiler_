@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JavaScript Compiler</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    body {     
+      font-family: 'Inter', sans-serif;
+      background-color: #e9ecef;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      /* background-color: #007bff; */
+      background-color: rgb(127, 13, 233);
+      color: white;
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    main {
+      
+      width: 80%;
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      resize: none;
+      margin-bottom: 20px;
+      transition: border-color 0.3s;
+    }
+
+    textarea:focus {
+      /* border-color: #007bff; */
+border-color: rgb(129, 27, 224);
+      outline: none;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    button {
+      /* background-color: #007bff; */
+      background-color: rgb(127, 13, 233);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      /* background-color: #0056b3; */
+      background-color: rgb(127, 13, 233);
+      transform: scale(1.05);
+    }
+
+    .phase-output {
+      display: none; /* Hide all phase outputs by default */
+      /* border: 2px solid #007bff; */
+      border: purple;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      background-color: #f8f9fa;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .active {
+      display: block; /* Show the active phase output */
+    }
+
+    .phase-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .phase-icon {
+      font-size: 24px;
+      margin-right: 10px;
+      color: #007bff;
+    }
+
+    footer {
+      margin-top: 20px;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Additional styles for aesthetics */
+    .phase-output pre {
+      background-color: #e9ecef;
+      border-radius: 4px;
+      padding: 10px;
+      overflow-x: auto;
+      white-space: pre-wrap; /* Allows wrapping */
+      word-wrap: break-word; /* Breaks long words */
+    }
+  </style>
+</head>
+<body>
+<header>
+  <span class="material-icons" aria-hidden="true">code</span>
+  <h1>JavaScript Compiler</h1>
+</header>
+<main>
+  <section aria-labelledby="input-label">
+    <h2 id="input-label">JavaScript Source Code Input</h2>
+    <textarea id="sourceInput" placeholder="Enter JavaScript code here..."></textarea>
+    <div class="button-container">
+      <button id="runButton">Run</button>
+      <button id="nextButton" style="display: none;">Next Phase</button>
+    </div>
+  </section>
+
+  <section id="lexical-output" class="phase-output">
+    <div class="phase-header">
+      <span class="material-icons phase-icon">description</span>
+      <h3>1. Lexical Analysis</h3>
+    </div>
+    <pre id="lexical-result">Waiting for input...</pre>
+  </section>
+  <section id="syntax-output" class="phase-output">
+    <div class="phase-header">
+      <span class="material-icons phase-icon">code</span>
+      <h3>2. Syntax Analysis</h3>
+    </div>
+    <pre id="syntax-result">Waiting for input...</pre>
+  </section>
+  <section id="semantic-output" class="phase-output">
+    <div class="phase-header">
+      <span class="material-icons phase-icon">check_circle</span>
+      <h3>3. Semantic Analysis</h3>
+    </div>
+    <pre id="semantic-result">Waiting for input...</pre>
+  </section>
+  <section id="ir-output" class="phase-output">
+    <div class="phase-header">
+      <span class="material-icons phase-icon">transform</span>
+      <h3>4. Intermediate Representation</h3>
+    </div>
+    <pre id="ir-result">Waiting for input...</pre>
+  </section>
+  <section id="opt-output" class="phase-output">
+    <div class="phase-header">
+      <span class="material-icons phase-icon">tune</span>
+      <h3>5. Optimization</h3>
+    </div>
+    <pre id="opt-result">Waiting for input...</pre>
+  </section>
+  <section id="codegen-output" class="phase-output">
+    <div class="phase-header">
+      <span class="material-icons phase-icon">assignment</span>
+      <h3>6. Code Generation</h3>
+    </div>
+    <pre id="codegen-result">Waiting for input...</pre>
+  </section>
+</main>
+<footer>
+  
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/esprima@4.0.1/dist/esprima.min.js"></script>
+<script src="lexical.js"></script>
+<script src="syntax.js"></script>
+<script src="semantic.js"></script>
+<script src="ir.js"></script>
+<script src="opt.js"></script>
+<script src="codegen.js"></script>
+<script>
+  const sourceInput = document.getElementById('sourceInput');
+  const runButton = document.getElementById('runButton');
+  const nextButton = document.getElementById('nextButton');
+
+  let currentPhase = 0; // Track the current phase
+  let ast; // To store the Abstract Syntax Tree
+  let ir; // To store Intermediate Representation
+
+  runButton.addEventListener('click', () => {
+    const source = sourceInput.value;
+
+    // Phase 1: Lexical Analysis
+    const lexicalOutput = lexicalAnalysis(source);
+    document.getElementById('lexical-result').textContent = lexicalOutput;
+    showPhase(0); // Show lexical analysis phase
+    nextButton.style.display = 'block'; // Show next button
+    currentPhase = 0; // Reset phase counter
+  });
+
+  nextButton.addEventListener('click', () => {
+    currentPhase++;
+    if (currentPhase === 1) {
+      // Phase 2: Syntax Analysis
+      ast = parseSyntax(sourceInput.value);
+      if (typeof ast === 'string') {
+        document.getElementById('syntax-result').textContent = ast; 
+        showPhase(1); // Show syntax analysis phase
+        nextButton.style.display = 'none'; // Hide next button
+        return;
+      }
+      document.getElementById('syntax-result').textContent = formatAST(ast);
+    } else if (currentPhase === 2) {
+      // Phase 3: Semantic Analysis
+      const semanticOutput = semanticAnalysis(ast);
+      document.getElementById('semantic-result').textContent = semanticOutput;
+    } else if (currentPhase === 3) {
+      // Phase 4: Intermediate Representation Generation
+      ir = generateIR(ast);
+      document.getElementById('ir-result').textContent = Array.isArray(ir) ? ir.join('\n') : ir;
+    } else if (currentPhase === 4) {
+      // Phase 5: Optimization
+      const optimizedIR = optimizeIR(ir);
+      document.getElementById('opt-result').textContent = optimizedIR.join('\n');
+    } else if (currentPhase === 5) {
+      // Phase 6: Code Generation
+      const codegen = generateCodeFromIR(ir); // Use the original IR for code generation
+      document.getElementById('codegen-result').textContent = codegen;
+      nextButton.style.display = 'none'; // Hide next button after last phase
+    }
+    showPhase(currentPhase); // Show the current phase
+  });
+
+  function showPhase(phaseIndex) {
+    const phases = document.querySelectorAll('.phase-output');
+    phases.forEach((phase, index) => {
+      phase.classList.remove('active');
+      if (index === phaseIndex) {
+        phase.classList.add('active');
+      }
+    });
+  }
+</script>
+</body>
+</html>
